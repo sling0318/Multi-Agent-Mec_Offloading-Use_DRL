@@ -31,7 +31,8 @@ class ReplayBuffer(object):
             obs, act, rew, obs_ = data
             observations.append(np.concatenate(obs[:]))
             actions.append(act)
-            rewards.append(rew[agent_dix])
+            # rewards.append(rew[agent_dix])
+            rewards.append(rew)
             observations_.append(np.concatenate(obs_[:]))
         return np.array(observations), np.array(actions), np.array(rewards), np.array(observations_)
 
