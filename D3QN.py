@@ -24,6 +24,9 @@ class Network(nn.Module):
         self.out = nn.Linear(64, n_actions)
         self.out.weight.data.normal_(0, 0.3)
         self.out.bias.data.normal_(0.1)
+        self.v = nn.Linear(64, 1)
+        self.v.weight.data.normal_(0, 0.3)
+        self.v.bias.data.normal_(0.1)
 
 
     def forward(self, x):
@@ -33,9 +36,13 @@ class Network(nn.Module):
         x = self.relu(x)
         x = self.fc3(x)
         x = self.relu(x)
-        return self.out(x)
 
-class Double_DQN:
+        v = self.v(x)
+        a = self.out(x)
+
+        return v + a - torch.mean(a, dim=-1, keepdim=True)
+
+class D3QN:
     def __init__(self,
                  env,
                  learning_rate=0.01,
